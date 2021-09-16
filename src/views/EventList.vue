@@ -2,7 +2,7 @@
   <h1>Events For Good</h1>
   <div class="events">
     <div class="search-box">
-      <BaseInput 
+      <BaseInput
         v-model="keyword"
         type="text"
         label="Search..."
@@ -36,7 +36,6 @@
 // @ is an alias to /src
 import EventCard from '@/components/EventCard.vue'
 import EventService from '@/services/EventService.js'
-
 // import axios from 'axios'
 export default {
   name: 'EventList',
@@ -56,7 +55,6 @@ export default {
       keyword: null
     }
   },
-
   // eslint-disable-next-line no-unused-vars
   beforeRouteEnter(routeTo, routeFrom, next) {
     EventService.getEvents(3, parseInt(routeTo.query.page) || 1)
@@ -73,18 +71,17 @@ export default {
   beforeRouteUpdate(routeTo) {
     var queryFunction
     if (this.keyword === '') {
-      queryFunction = EventService.getEvents (
+      queryFunction = EventService.getEvents(
         3,
         parseInt(routeTo.query.page) || 1
       )
     } else {
-      queryFunction = EventService.getEventsByKeyword (
+      queryFunction = EventService.getEventByKeyword(
         this.keyword,
         3,
         parseInt(routeTo.query.page) || 1
       )
     }
-
     queryFunction
       .then((response) => {
         this.events = response.data // <-----
@@ -96,30 +93,28 @@ export default {
   },
   methods: {
     updateKeyword() {
-      var queryFunction 
+      var queryFunction
       if (this.keyword === '') {
-        queryFunction = EventService.getEvents(3,1)
+        queryFunction = EventService.getEvents(3, 1)
       } else {
-        queryFunction = EventService.getEventsByKeyword(this.keyword, 3, 1)
+        queryFunction = EventService.getEventByKeyword(this.keyword, 3, 1)
       }
-
       queryFunction
-      .then((response) => {
-        this.events = response.data
-        console.log(this.events)
-        this.totalEvents = response.headers['x-total-count']
-        console.log(this.totalEvents)
-      })
-      .catch(() => {
-        return { name: 'NetworkError' }
-      })
+        .then((response) => {
+          this.events = response.data
+          console.log(this.events)
+          this.totalEvents = response.headers['x-total-count']
+          console.log(this.totalEvents)
+        })
+        .catch(() => {
+          return { name: 'NetworkError' }
+        })
     }
   },
   computed: {
     hasNextPage() {
       // First, calculate total pages
       let totalPages = Math.ceil(this.totalEvents / 3) // 2 is events per page
-
       // Then check to see if the current page is less than the total pages.
       return this.page < totalPages
     }
@@ -132,11 +127,9 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-
 .search-box {
   width: 300px;
 }
-
 .pagination {
   display: flex;
   width: 290px;
@@ -146,11 +139,9 @@ export default {
   text-decoration: none;
   color: #2c3e50;
 }
-
 #page-prev {
   text-align: left;
 }
-
 #page-next {
   text-align: right;
 }
